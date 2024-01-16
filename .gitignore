@@ -1,0 +1,12 @@
+.git/
+.idea/
+env/
+venv/
+__pycache__/
+donnees/
+actions_data.csv
+exemple.txt
+exp.txt
+explication.txt
+test.py
+readme.txt
