@@ -3,15 +3,23 @@ from itertools import combinations
 
 def read_actions(file_path):
     actions = []
-    with open(file_path, 'r') as file:
-        next(file)  # Skip the header line if present
+    with open(file_path, 'r', encoding='utf-8') as file:
+        first_line = next(file)
+        print(first_line)
+        if "Benefit(%)" in first_line:
+            benefit_in_percentage = True
+        else:
+            benefit_in_percentage = False
+
         for line in file:
             parts = line.strip().split(',')
             action_name = parts[0].strip('"')
             cost_per_action = float(parts[1])
             profit_after_2_years = float(parts[2])
-            if profit_after_2_years < 1:
+            if benefit_in_percentage:
                 profit_after_2_years = profit_after_2_years * cost_per_action
+            else:
+                pass
             if cost_per_action > 0:
                 actions.append((action_name, cost_per_action, profit_after_2_years))
         return actions
