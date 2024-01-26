@@ -1,28 +1,28 @@
 from itertools import combinations
+import csv
 
 
 def read_actions(file_path):
     actions = []
     with open(file_path, 'r', encoding='utf-8') as file:
-        first_line = next(file)
-        print(first_line)
-        if "Benefit(%)" in first_line:
-            benefit_in_percentage = True
-        else:
-            benefit_in_percentage = False
+        csv_reader = csv.DictReader(file)
 
-        for line in file:
-            parts = line.strip().split(',')
-            action_name = parts[0].strip('"')
-            cost_per_action = float(parts[1])
-            profit_after_2_years = float(parts[2])
-            if benefit_in_percentage:
-                profit_after_2_years = profit_after_2_years * cost_per_action
+        if "profit(%)" in csv_reader.fieldnames:
+            profit_in_percentage = True
+        else:
+            profit_in_percentage = False
+
+        for row in csv_reader:
+            action_name = row['name']
+            cost_per_action = float(row['price'])
+            if profit_in_percentage:
+                profit_after_2_years = float(row['profit(%)']) * cost_per_action
             else:
-                pass
+                profit_after_2_years = float(row['profit'])
             if cost_per_action > 0:
                 actions.append((action_name, cost_per_action, profit_after_2_years))
-        return actions
+
+    return actions
 
 
 def bruteforce(actions, max_budget):
